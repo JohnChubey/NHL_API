@@ -6,7 +6,10 @@ import requests
 import itertools
 from multiprocessing import Pool
 
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app)
 
 BASE_URL = 'https://statsapi.web.nhl.com'
 CURRENT_SEASON_URL = 'https://statsapi.web.nhl.com/api/v1/seasons/current'
