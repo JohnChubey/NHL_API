@@ -6,8 +6,6 @@ import requests
 import itertools
 from multiprocessing import Pool
 
-from Extras.Constants import GOALIE, NOT_FOUND
-
 app = Flask(__name__)
 
 BASE_URL = 'https://statsapi.web.nhl.com'
@@ -40,7 +38,8 @@ def get_custom_player_data(player, season='20182019'):
         player_stats = get_player_stats_object(player_stats_response)
         return {
             'player': person,
-            'stats': player_stats
+            'stats': player_stats,
+            'position': player.get('position', dict()),
         }
     else:
         return {'error': 'Problem connecting to API'}
@@ -66,10 +65,10 @@ def get_player_stats():
         custom_player_data_function = partial(get_custom_player_data, season=current_season)
         print('Start searching...')
         start_time = time.time()
-        custom_player_data = list(itertools.chain.from_iterable(worker_pool.map(custom_player_data_function, all_players)))
+        custom_player_data = list(worker_pool.map(custom_player_data_function, all_players))
         print('Finished searching.')
         print('Total time:', time.time() - start_time)
-        return jsonify(all_players)
+        return jsonify(custom_player_data)
     else:
         return []
 
