@@ -7,8 +7,12 @@ import itertools
 from multiprocessing import Pool
 
 from flask_cors import CORS
+from flask_caching import Cache
+
+cache = Cache(config={'CACHE_TYPE': 'simple'})
 
 app = Flask(__name__)
+cache.init_app(app)
 CORS(app)
 
 BASE_URL = 'https://statsapi.web.nhl.com'
@@ -58,6 +62,7 @@ def get_season(season=None):
 
 
 @app.route("/players")
+@cache.cached(timeout=300)
 def get_player_stats():
     current_season = get_season()
     teams_response = requests.get(TEAMS_URL)
