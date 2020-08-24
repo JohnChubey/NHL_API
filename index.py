@@ -62,7 +62,7 @@ def get_season(season=None):
 
 
 @app.route("/players")
-@cache.cached(timeout=300)
+@cache.cached(timeout=600)
 def get_player_stats():
     current_season = get_season()
     teams_response = requests.get(TEAMS_URL)
