@@ -1,0 +1,19 @@
+NHL Stats API
+Author: John Chubey
+
+Installation:
+1) Make sure you have Python 3 installed
+2) Make sure you have Pip installed
+3) If you don't have it already, download pipenv onto your linux computer using 'pip install pipenv'
+4) Navigate to the root directory (where Pipfile is located)
+5) Run 'pipenv install' and all the dependencies should be installed
+
+Running the program:
+1) Run the command 'export FLASK_APP=index' to export the environment variable!
+2) Then run the command 'flask run' and the project should start!
+3) Navigate to http://127.0.0.1:5000/ and start making API calls
+
+
+Extra info:
+Currently the only endpoint that works is the '/players' endpoint. This document will be updated in the future
+when more are added.
