@@ -13,6 +13,10 @@ Running the program:
 2) Then run the command 'flask run' and the project should start!
 3) Navigate to http://127.0.0.1:5000/ and start making API calls
 
+Testing:
+1) Currently, all tests are run using pytest. To run all tests, run the command 'pytest test_index.py -v' in the root
+directory after installing all dependencies and the tests should be run in your terminal.
+
 
 Extra info:
 Currently the only endpoint that works is the '/players' endpoint. This document will be updated in the future
