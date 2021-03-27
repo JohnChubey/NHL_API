@@ -20,6 +20,8 @@ from multiprocessing import Pool
 from flask_cors import CORS
 from flask_caching import Cache
 
+from utils import stats_exist, filter_player_data
+
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 
 app = Flask(__name__)
@@ -93,6 +95,10 @@ def get_custom_player_data(player, season='20182019'):
     player_stats_response = requests.get(BASE_URL + '/api/v1/people/' + str(id) + '/stats' + '?stats=statsSingleSeason&season=' + season)
     if player_stats_response.status_code == 200:
         player_stats_list = player_stats_response.json().get('stats', None)
+        if not stats_exist(player_stats_list):
+            return
+        if person.get('fullName') == 'Johnny Boychuk': #################################### REMOVE THIS IF STATEMENT
+            print(id)
         player_stats = get_player_stats_object(player_stats_list)
         return {
             'player': person,
@@ -101,7 +107,6 @@ def get_custom_player_data(player, season='20182019'):
         }
     else:
         return {'error': 'Problem retrieving player stats '}
-
 
 def get_season(season=None):
     """
@@ -119,7 +124,7 @@ def get_season(season=None):
     if season is None:
         current_season_response = requests.get(CURRENT_SEASON_URL)
         if current_season_response.status_code == 200:
-            return current_season_response.json().get('seasons')[0].get('seasonid', '20192020')
+            return current_season_response.json().get('seasons')[0].get('seasonId', '20192020')
         else:
             return '20182019'
     elif len(season) == 8 and season.isdigit():
@@ -154,7 +159,6 @@ def get_player_stats():
         all_players = list(itertools.chain.from_iterable(worker_pool.map(get_players_from_teams, teams.get('teams', []))))
         custom_player_data_function = partial(get_custom_player_data, season=current_season)
         custom_player_data = list(worker_pool.map(custom_player_data_function, all_players))
-        return jsonify(custom_player_data)
+        return jsonify(filter_player_data(custom_player_data))
     else:
         return jsonify([])
-
