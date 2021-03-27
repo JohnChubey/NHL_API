@@ -10,7 +10,7 @@ Installation:
 
 Running the program:
 1) Run the command 'export FLASK_APP=index' to export the environment variable!
-2) Then run the command 'flask run' and the project should start!
+2) Then run the command 'pipenv run flask run' and the project should start!
 3) Navigate to http://127.0.0.1:5000/ and start making API calls
 
 Testing:
